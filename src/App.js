@@ -1,38 +1,46 @@
-import { ApiMixinFactory } from './mixins/apiMixin'
-var tableMixin = require('./mixins/tableMixin').default
-var paginationMixin = require('./mixins/paginationMixin')
-var React = require('react')
-var createReactClass = require('create-react-class')
-var Pagination = require('./Pagination').default
-var $ = require('jquery')
+import ApiMixinFactory from './mixins/apiMixin'
+import tableMixin from './mixins/tableMixin'
+import { paginationMixin } from './mixins/paginationMixin'
+import React from 'react'
+import createReactClass from 'create-react-class'
+import Pagination from './Pagination'
+import $ from 'jquery'
 
-const apiMixin =  ApiMixinFactory().getApiMixin($.ajax)
+var apiMixin = new ApiMixinFactory().getApiMixin($.ajax)
+
 var App = createReactClass({
     mixins: [
         tableMixin,
         paginationMixin,
         apiMixin
     ],
-    render: function () {
+    render() {
         var self = this
-            var start = (this.state.itemsPerPage * (this.state.activePage - 1))
-            var end = start * this.state.itemsPerPage
-            var universities = this.state.universities.slice(start, start * this.state.itemsPerPage)
+        var start = (this.state.itemsPerPage * (this.state.activePage - 1))
+        var end = (start + this.state.itemsPerPage)
+        var universities = this.state.universities.slice(start, end)
         var table = self.renderTable(universities)
-
-            return (<div>
+        return (
+            <div>
                 <label htmlFor="#search">Поиск</label>
-                <br/>
-                <input id="search" onChange={this.handleSearchChange} type="string" value={this.state.value}/>
+                <input
+                    id="search"
+                    onChange={this.handleSearchChange}
+                    type="string"
+                    value={this.state.value}
+                />
                 <div>
                     {table}
                 </div>
-                <Pagination itemsPerPage={10}
-                            totalItems={this.state.universities.length}
-                            onPageChange={() =>self.handleClick()}/>
+                <Pagination
+                    itemsPerPage={10}
+                    totalItems={this.state.universities.length}
+                    onPageChange={self.handleClick}
+                />
                 <div>{this.state.color}</div>
-            </div>)
-        }
+            </div>
+        )
+    }
 })
 
-export {App}
+export default App 

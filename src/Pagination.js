@@ -17,8 +17,8 @@ class Pagination extends React.Component {
     }
 
     render() {
-        const {currentPage} = this.state;
-        const {itemsPerPage, totalItems} = this.props;
+        const { currentPage } = this.state;
+        const { itemsPerPage, totalItems } = this.props;
         const totalPages = Math.ceil(totalItems / itemsPerPage);
         const pageNumbers = [];
         for (let i = 1; i <= totalPages; i++) {
@@ -29,9 +29,9 @@ class Pagination extends React.Component {
                 {pageNumbers.map(number => (
                     <button
                         key={number}
-                        onClick={function() {
+                        onClick={() =>
                             this.handleClick(number)
-                        }}
+                        }
                         className={number === currentPage ? 'active' : ''}>
                         {number}
                     </button>
